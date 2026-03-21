@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="de-CH">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Werkstatt Wissenschaftssprache</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Lernen, prüfen, verbessern</p>
+          <h1>Werkstatt für wissenschaftlichen Stil</h1>
+          <p class="lede">
+            Lade einen Text hoch oder füge ihn direkt ein. Das Tool markiert sprachliche und
+            stilistische Schwächen, prüft Quellenhinweise im gewählten Zitationsmodus und bietet
+            eine Verbesserungskopie für die Überarbeitung.
+          </p>
+        </div>
+
+        <div class="hero-controls">
+          <div class="mode-box">
+            <span class="mode-label">Zitationsmodus</span>
+            <div class="mode-toggle" id="citationMode">
+              <button type="button" class="mode-button active" data-citation-style="apa">APA</button>
+              <button type="button" class="mode-button" data-citation-style="fussnoten">Fussnoten</button>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <label class="button secondary" for="fileInput">Text hochladen</label>
+            <input id="fileInput" type="file" accept=".txt,.md,.html,.htm,.docx,.pdf" />
+            <button id="sampleButton" type="button" class="button ghost">Beispieltext laden</button>
+            <button id="analyzeButton" type="button" class="button primary">Text prüfen</button>
+            <button id="improveButton" type="button" class="button accent" disabled>
+              Verbesserungskopie erzeugen
+            </button>
+          </div>
+
+          <div class="hero-meta">
+            <span id="fileMeta">Noch keine Datei geladen.</span>
+            <span id="statusBadge" class="status-badge neutral">Bereit</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="learning-grid">
+        <article class="learning-card">
+          <p class="card-kicker">Grundprinzip</p>
+          <h2>Objektiv statt meinungsbetont</h2>
+          <p>
+            Wissenschaftliche Sprache stützt sich auf Befunde, Daten und nachvollziehbare
+            Argumente. Ich-, Wir- und man-Formulierungen sollten nur sehr bewusst eingesetzt
+            werden.
+          </p>
+        </article>
+
+        <article class="learning-card">
+          <p class="card-kicker">Sprachstil</p>
+          <h2>Präzise und verständlich</h2>
+          <p>
+            Fachbegriffe sollen korrekt, aber nicht inflationär verwendet werden. Vage Wörter wie
+            „Dinge“, „Leute“ oder „eigentlich“ schwächen den wissenschaftlichen Ton.
+          </p>
+        </article>
+
+        <article class="learning-card">
+          <p class="card-kicker">Struktur</p>
+          <h2>Klare Argumentationskette</h2>
+          <p>
+            Gute wissenschaftliche Texte führen von der Fragestellung über Belege und Analyse zu
+            einem nachvollziehbaren Schluss. Absätze markieren inhaltliche Schritte.
+          </p>
+        </article>
+
+        <article class="learning-card citation-card">
+          <p class="card-kicker">Zitieren und Paraphrasieren</p>
+          <h2 id="citationGuideTitle">APA im Fliesstext</h2>
+          <p id="citationGuideRule">
+            Direkte und indirekte Übernahmen werden im Fliesstext mit Autor, Jahr und Seitenangabe
+            markiert.
+          </p>
+          <div id="citationGuideExamples" class="example-list"></div>
+          <div id="citationGuideChecklist" class="checklist-box"></div>
+        </article>
+
+        <article class="learning-card">
+          <p class="card-kicker">Facharbeit KSA</p>
+          <h2>Präzise, eigenständig, nachweisbar</h2>
+          <p>
+            Laut Dossier muss das Thema eingegrenzt sein, eine eigene Untersuchung enthalten und
+            Gedanken anderer sauber von eigenen Schlussfolgerungen trennen.
+          </p>
+        </article>
+
+        <article class="learning-card">
+          <p class="card-kicker">Dossier-Anforderungen</p>
+          <h2>Abstract, Titel, Struktur</h2>
+          <p>
+            Das Tool prüft zusätzlich Titelbegrenzung, Abstract, Kapitelstruktur, Internetquellen
+            mit Abrufdatum und die Sichtbarkeit der Eigenständigkeitserklärung.
+          </p>
+        </article>
+      </section>
+
+      <main class="workspace">
+        <section class="editor-column">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Facharbeit-Dossier</p>
+                <h2>Projektdaten</h2>
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                Haupttitel der Facharbeit
+                <input
+                  id="titleInput"
+                  type="text"
+                  maxlength="180"
+                  placeholder="Titel der Facharbeit (laut Dossier höchstens 100 Zeichen)"
+                />
+              </label>
+
+              <label class="field">
+                Fachrichtung / Arbeitstyp
+                <select id="workTypeInput">
+                  <option value="allgemein">Allgemein</option>
+                  <option value="geisteswissenschaftlich">Geisteswissenschaftlich</option>
+                  <option value="naturwissenschaftlich">Naturwissenschaftlich</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field field-block">
+              Abstract / Kurzfassung
+              <textarea
+                id="abstractInput"
+                class="compact-textarea"
+                placeholder="Kurze, präzise Zusammenfassung mit Fragestellung, Vorgehen, Ergebnissen und Schlussfolgerung."
+              ></textarea>
+            </label>
+          </article>
+
+          <article class="panel editor-panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Arbeitsbereich</p>
+                <h2>Ausgangstext</h2>
+              </div>
+              <div class="text-stats" id="textStats">
+                <span>0 Wörter</span>
+                <span>0 Sätze</span>
+                <span>0 Absätze</span>
+              </div>
+            </div>
+
+            <textarea
+              id="textInput"
+              placeholder="Füge hier deinen wissenschaftlichen Text ein oder lade eine Datei hoch."
+            ></textarea>
+
+            <div class="checklist">
+              <strong>Kurzcheck vor dem Prüfen</strong>
+              <div class="checklist-items">
+                <span>Objektive Formulierungen</span>
+                <span>klare Absatzlogik</span>
+                <span>Quellen sauber markiert</span>
+                <span>inklusive Sprache</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel revision-panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Verbesserungsfunktion</p>
+                <h2>Verbesserungskopie</h2>
+              </div>
+              <button id="copyBackButton" type="button" class="button ghost small" disabled>
+                In Editor übernehmen
+              </button>
+            </div>
+
+            <div class="revision-toolbar">
+              <div>
+                <p class="panel-kicker">Überarbeitungsgrad</p>
+                <div class="mode-toggle revision-toggle" id="revisionMode">
+                  <button type="button" class="mode-button" data-revision-level="leicht">Leicht</button>
+                  <button type="button" class="mode-button active" data-revision-level="standard">Standard</button>
+                  <button type="button" class="mode-button" data-revision-level="radikal">Radikal</button>
+                </div>
+              </div>
+              <div id="revisionStats" class="revision-stats empty-state">
+                Nach der Analyse erscheinen hier Umfang und Schärfe der gewählten Überarbeitungsstufe.
+              </div>
+            </div>
+
+            <textarea
+              id="revisionOutput"
+              placeholder="Nach der Analyse kann hier eine bearbeitbare Verbesserungskopie erzeugt werden."
+            ></textarea>
+            <p class="revision-note">
+              Die Verbesserungskopie ist ein Arbeitsvorschlag. Zitationsdetails und fachliche
+              Aussagen sollten immer noch manuell geprüft werden.
+            </p>
+          </article>
+        </section>
+
+        <section class="results-column">
+          <article class="panel score-panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Gesamturteil</p>
+                <h2>Wissenschaftlicher Stil</h2>
+              </div>
+              <div class="score-ring" id="scoreRing">
+                <span id="scoreValue">0</span>
+              </div>
+            </div>
+
+            <p id="summaryText" class="summary-text">
+              Nach der Prüfung erscheinen hier Gesamturteil, Prioritäten und Lernhinweise.
+            </p>
+            <div id="categoryGrid" class="category-grid"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Dossier-Check</p>
+                <h2>Facharbeit nach Vorgaben</h2>
+              </div>
+            </div>
+            <div id="dossierBox" class="stack-list empty-state">
+              Nach der Analyse erscheinen hier die integrierten Anforderungen aus dem Facharbeitsdossier.
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Schwachstellen sichtbar machen</p>
+                <h2>Markierte Stellen</h2>
+              </div>
+            </div>
+            <div id="issuesBox" class="stack-list empty-state">
+              Nach der Analyse werden hier problematische Stellen mit Verbesserungsvorschlägen
+              angezeigt.
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Formulierungshilfe</p>
+                <h2>Verbesserungen</h2>
+              </div>
+            </div>
+            <div id="suggestionsBox" class="stack-list empty-state">
+              Noch keine Vorschläge vorhanden.
+            </div>
+            <div id="templatesBox" class="template-list empty-state">
+              Nach der Analyse erscheinen hier konkrete Überarbeitungsbeispiele.
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Revision radikal ausbauen</p>
+                <h2>Revisionsplan und Eingriffe</h2>
+              </div>
+            </div>
+            <div id="revisionPlanBox" class="stack-list empty-state">
+              Nach der Analyse erscheint hier ein mehrstufiger Überarbeitungsplan.
+            </div>
+            <div id="revisionActionsBox" class="stack-list empty-state">
+              Konkrete Eingriffe der gewählten Überarbeitungsstufe erscheinen hier.
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Rechtschreibung und Grammatik</p>
+                <h2>LanguageTool de-CH</h2>
+              </div>
+            </div>
+            <p id="spellcheckStatus" class="subtle-copy">
+              Noch keine Rechtschreibprüfung gestartet.
+            </p>
+            <div id="spellcheckBox" class="stack-list empty-state">
+              Treffer und Korrekturvorschläge erscheinen hier.
+            </div>
+            <p class="service-note">
+              Prüfung mit
+              <a href="https://languagetool.org/de" target="_blank" rel="noreferrer">LanguageTool</a>
+              in deutschschweizer Rechtschreibung.
+            </p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

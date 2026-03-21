@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Werkstatt Wissenschaftssprache</title>
+  <style>
+    :root{
+      --bg:#f4efe4;
+      --paper:#fffaf1;
+      --ink:#1d1917;
+      --muted:#5d5248;
+      --accent:#7b2d26;
+      --accent-soft:#c88a3a;
+      --line:rgba(56,39,29,0.12);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      padding:28px;
+      background:
+        radial-gradient(circle at top left, rgba(200,138,58,0.22), transparent 24%),
+        radial-gradient(circle at top right, rgba(123,45,38,0.14), transparent 20%),
+        var(--bg);
+      color:var(--ink);
+    }
+    .wrap{
+      max-width:980px;
+      margin:28px auto;
+      background:var(--paper);
+      padding:34px;
+      border-radius:28px;
+      box-shadow:0 18px 48px rgba(0,0,0,0.12);
+      border:1px solid rgba(255,255,255,0.6);
+    }
+    .eyebrow{
+      margin:0 0 10px;
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.78rem;
+      font-weight:700;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(2.5rem, 7vw, 5.5rem);
+      line-height:.94;
+      font-family:Iowan Old Style, Palatino Linotype, Book Antiqua, serif;
+      letter-spacing:-0.04em;
+    }
+    .lead{
+      max-width:54rem;
+      margin:18px 0 0;
+      font-size:1.08rem;
+      line-height:1.72;
+      color:var(--muted);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:22px;
+      margin-top:28px;
+    }
+    .card{
+      background:rgba(255,255,255,0.52);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+    }
+    .card h2{
+      margin:0 0 12px;
+      font-size:1.3rem;
+    }
+    .card p, li{
+      color:var(--muted);
+      line-height:1.7;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+    }
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:22px;
+    }
+    a{
+      color:var(--accent);
+      font-weight:700;
+      text-decoration:none;
+    }
+    .start-btn,
+    .ghost-btn{
+      display:inline-block;
+      padding:15px 22px;
+      border-radius:16px;
+      font-weight:800;
+      font-size:1rem;
+      letter-spacing:.02em;
+    }
+    .start-btn{
+      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+      color:#fffaf1;
+      box-shadow:0 10px 20px rgba(0,0,0,0.14);
+    }
+    .ghost-btn{
+      background:rgba(255,255,255,0.72);
+      border:1px solid var(--line);
+      color:var(--ink);
+    }
+    .note{
+      margin-top:16px;
+      padding:16px 18px;
+      border-radius:18px;
+      background:rgba(123,45,38,0.06);
+      color:var(--muted);
+    }
+    code{
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+      font-size:.94em;
+    }
+    @media (max-width: 840px){
+      body{padding:16px;}
+      .wrap{padding:22px;}
+      .grid{grid-template-columns:1fr;}
+      .actions{flex-direction:column;}
+      .start-btn,.ghost-btn{width:100%; text-align:center;}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Lern- und Überprüfungstool</p>
+    <h1>Werkstatt Wissenschaftssprache</h1>
+    <p class="lead">
+      Dies ist die korrekte Startseite des Projekts. Von hier aus gelangst du direkt zur
+      vollständigen Anwendung mit Stilprüfung, Zitationskontrolle und Verbesserungsvorschlägen.
+    </p>
+
+    <div class="actions">
+      <a class="start-btn" href="/wissenschaftssprache/">App öffnen</a>
+      <a class="ghost-btn" href="/api/health">API-Status prüfen</a>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Funktionen</h2>
+        <ul>
+          <li>Upload von Text, DOCX und PDF</li>
+          <li>Analyse wissenschaftlicher Sprache</li>
+          <li>Zitationsmodus <code>APA</code> oder <code>Fussnoten</code></li>
+          <li>LanguageTool in <code>de-CH</code></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Wichtig</h2>
+        <p>
+          Diese Seite leitet nicht mehr automatisch um. So bleibt sichtbar, dass du dich wirklich
+          im Projekt <strong>Wissenschaftssprache</strong> befindest.
+        </p>
+        <div class="note">
+          Falls noch eine alte Seite erscheint, bitte einmal hart neu laden oder den Cache leeren.
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

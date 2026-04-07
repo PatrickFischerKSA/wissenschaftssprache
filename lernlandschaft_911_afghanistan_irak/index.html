@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9/11, Afghanistan und Irak - Lernlandschaft</title>
+    <meta
+      name="description"
+      content="Interaktive Lernlandschaft zu 9/11, Afghanistan und Irak mit Rückblick auf den Golfkrieg 1990/91, Sofortkorrektur und verknüpften Filmmodulen."
+    />
+    <meta name="theme-color" content="#25374a" />
+    <meta property="og:title" content="9/11, Afghanistan und Irak - Lernlandschaft" />
+    <meta
+      property="og:description"
+      content="Drei digitale Stationen zu 9/11, Afghanistan 2001 bis 2021 und Irak von 1990/91 bis 2011 mit kurzen Textfragen, Sofortfeedback, Transferfragen und Lehrpersonenmodus."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="9/11, Afghanistan und Irak - Lernlandschaft" />
+    <meta
+      name="twitter:description"
+      content="Interaktive Lernlandschaft zu 9/11, Afghanistan und Irak mit offenen Fragen, Sofortfeedback und geordneten Filmquellen."
+    />
+    <link rel="stylesheet" href="styles.css?v=20260407neunelf" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Lernlandschaft Geschichte</p>
+          <h1>9/11, Afghanistan und Irak</h1>
+          <p class="lead">
+            Diese Lernlandschaft ordnet deine verlinkten Filme zu einer dreiteiligen Lernroute:
+            zuerst 9/11 als globaler Schock, dann Afghanistan von der Vorgeschichte bis zum
+            US-Abzug am 30. August 2021 und schließlich der Irak mit kurzem Rückblick auf den
+            Golfkrieg 1990/91 bis zum Abzug der letzten US-Kampftruppen im Dezember 2011. Jede
+            Station verbindet Filmkommentare, verlässliche Zusatzquellen, Fragen und
+            Sofortfeedback.
+          </p>
+          <div class="hero-actions">
+            <button class="btn primary" id="start-route-button" type="button">Mit Station 1 beginnen</button>
+            <button class="btn ghost" id="open-first-open-button" type="button">Direkt zur ersten Transferfrage</button>
+            <button class="btn ghost" id="teacher-mode-button" type="button">Lehrer*innenzugang</button>
+          </div>
+        </div>
+
+        <aside class="hero-note">
+          <div class="note-card">
+            <p class="note-label">Leitfrage</p>
+            <p>
+              Wie veränderten die Anschläge vom 11. September 2001 die Politik der USA, warum
+              wurde Afghanistan zum Hauptkriegsschauplatz und wie hängt der Irakkrieg von 2003 mit
+              dem Golfkrieg 1990/91 und der 9/11-Ära zusammen?
+            </p>
+          </div>
+          <div class="note-card">
+            <p class="note-label">Arbeitsweise</p>
+            <p>
+              Zuerst Material sichten, dann Begriffe sichern, anschließend Zusammenhänge deuten.
+              Kurze Freitextantworten werden mit Begriffsfeldern und Synonymen geprüft; offene
+              Antworten erhalten gestuftes Sofortfeedback.
+            </p>
+          </div>
+          <div class="note-card">
+            <p class="note-label">Quellenmix</p>
+            <p>
+              Die Stationen verbinden acht geordnete YouTube-Filme, offizielle Archive, bpb-Texte,
+              9/11-Museumsmaterialien, den Office of the Historian und US-Regierungsquellen. So
+              lassen sich Ereignisgeschichte, Täteranalyse, Kriegsverlauf und Nachwirkungen aus
+              unterschiedlichen Perspektiven erschließen.
+            </p>
+          </div>
+        </aside>
+      </header>
+
+      <section class="panel teacher-access-panel hidden" id="teacher-access-panel"></section>
+
+      <section class="dashboard">
+        <div class="stats-grid" id="stats-grid"></div>
+        <div class="panel legend-card">
+          <p class="eyebrow">Fragemodi</p>
+          <div class="legend-list">
+            <div>
+              <span class="legend-chip legend-fact">Kurze Freitexte</span>
+              <p>Begriffe, Zusammenhänge und Synonyme werden sofort geprüft</p>
+            </div>
+            <div>
+              <span class="legend-chip legend-compare">Ordnen</span>
+              <p>Drag-and-drop-Aufgaben prüfen Chronologie und Strukturverständnis</p>
+            </div>
+            <div>
+              <span class="legend-chip legend-transfer">Transfer</span>
+              <p>Kurze Transferantworten verbinden Material, Begriff und Deutung</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <aside class="panel module-rail">
+          <div class="rail-head">
+            <p class="eyebrow">Stationen</p>
+            <h2>9/11 bis Abzug</h2>
+          </div>
+          <div id="module-nav" class="module-nav"></div>
+        </aside>
+
+        <main class="focus-column">
+          <section class="panel module-header" id="module-header"></section>
+
+          <section class="panel hidden" id="resource-panel" aria-hidden="true">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Materialpool</p>
+                <h2>Ressourcen der Station</h2>
+              </div>
+              <p class="section-copy">
+                Alle eingebauten Materialien dieser Station sind hier nach Typ geordnet. Die
+                Videos öffnen in YouTube, die Zusatzquellen bei offiziellen Archiven,
+                Museen, Regierungsstellen oder der bpb.
+              </p>
+            </div>
+            <div id="resource-groups" class="resource-groups"></div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Fragenraum</p>
+                <h2>Vertiefungsfragen</h2>
+              </div>
+              <p class="section-copy">
+                Nach jeder Antwort erscheint sofort eine Rückmeldung. Bei kurzen Freitexten
+                werden auch sinnverwandte Formulierungen erkannt.
+              </p>
+            </div>
+            <div id="question-list" class="question-list"></div>
+          </section>
+
+          <section class="panel teacher-panel hidden" id="teacher-panel"></section>
+        </main>
+      </div>
+    </div>
+
+    <div id="mini-question-modal" class="mini-question-modal hidden" aria-hidden="true"></div>
+    <div id="source-modal" class="source-modal hidden" aria-hidden="true"></div>
+
+    <script src="data.js?v=20260407neunelf"></script>
+    <script src="app.js?v=20260407neunelf"></script>
+  </body>
+</html>

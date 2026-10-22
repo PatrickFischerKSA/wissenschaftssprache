@@ -8,10 +8,14 @@
   </head>
   <body>
     <div class="page-shell">
+      <div class="masthead">
+        <a class="brand" href="./">wissenschafts<span>sprache</span><i aria-hidden="true">W</i></a>
+        <span class="masthead-note">Werkstatt für deine Facharbeit</span>
+      </div>
       <header class="hero">
         <div class="hero-copy">
           <p class="eyebrow">Lernen, prüfen, verbessern</p>
-          <h1>Werkstatt für wissenschaftlichen Stil</h1>
+          <h1>Klare Gedanken.<br /><em>Wissenschaftlich schreiben.</em></h1>
           <p class="lede">
             Lade einen Text hoch oder füge ihn direkt ein. Das Tool markiert sprachliche und
             stilistische Schwächen, prüft Quellenhinweise im gewählten Zitationsmodus und bietet
@@ -45,7 +49,9 @@
         </div>
       </header>
 
-      <section class="learning-grid">
+      <details class="learning-guide">
+        <summary>Wissenschaftlich schreiben – Grundlagen und Zitierhilfe</summary>
+        <section class="learning-grid">
         <article class="learning-card">
           <p class="card-kicker">Grundprinzip</p>
           <h2>Objektiv statt meinungsbetont</h2>
@@ -104,6 +110,8 @@
         </article>
       </section>
 
+      </details>
+
       <main class="workspace">
         <section class="editor-column">
           <article class="panel">
@@ -159,7 +167,7 @@
             </div>
 
             <textarea
-              id="textInput"
+              id="textInput" aria-label="Ausgangstext"
               placeholder="Füge hier deinen wissenschaftlichen Text ein oder lade eine Datei hoch."
             ></textarea>
 
@@ -200,7 +208,7 @@
             </div>
 
             <textarea
-              id="revisionOutput"
+              id="revisionOutput" aria-label="Verbesserungskopie"
               placeholder="Nach der Analyse kann hier eine bearbeitbare Verbesserungskopie erzeugt werden."
             ></textarea>
             <p class="revision-note">
@@ -304,6 +312,7 @@
           </article>
         </section>
       </main>
+      <footer><span>Wissenschaftssprache · Schreibwerkstatt</span><span>Präzise. Eigenständig. Nachweisbar.</span></footer>
     </div>
 
     <script src="app.js"></script>

@@ -1,8 +1,5 @@
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const { execFileSync } = require('child_process');
-
+/* Browser-only, deterministic analysis. No network or API keys. */
+(() => {
 const SWISS_REPLACEMENTS = [
   [/\bIch finde, dass\b/gi, 'Die Analyse legt nahe, dass'],
   [/\bMeiner Meinung nach\b/gi, 'Aus den vorliegenden Befunden ergibt sich, dass'],
@@ -234,7 +231,7 @@ const RADICAL_REVISION_RULES = [
   {
     title: 'Halbpräzise Formulierung schärfen',
     category: 'praezision',
-    pattern: /\bhalb genau\b/gi,
+    pattern: /\b(?:nur\s+)?halb genau\b/gi,
     replacement: 'nur unzureichend präzise',
     reason: 'Umgangssprachliche Wertungen werden akademisch präzisiert.'
   }
@@ -245,6 +242,7 @@ function normalizeText(value) {
     .replace(/\r\n/g, '\n')
     .replace(/\u00a0/g, ' ')
     .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n[ \t]+/g, '\n')
     .trim();
 }
 
@@ -319,105 +317,6 @@ function extractDocxXmlText(xml) {
         .replace(/<[^>]+>/g, '')
     )
   );
-}
-
-function extractDocxText(filePath) {
-  try {
-    const output = execFileSync('textutil', ['-convert', 'txt', '-stdout', filePath], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore']
-    });
-    return normalizeText(output);
-  } catch {}
-
-  try {
-    const xml = execFileSync('unzip', ['-p', filePath, 'word/document.xml'], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore']
-    });
-    return extractDocxXmlText(xml);
-  } catch (error) {
-    throw new Error(`DOCX konnte nicht gelesen werden: ${error.message}`);
-  }
-}
-
-function extractPdfText(filePath) {
-  const script = `
-from pathlib import Path
-import sys
-
-path = Path(sys.argv[1])
-errors = []
-
-for module_name in ("pypdf", "PyPDF2"):
-    try:
-        mod = __import__(module_name)
-        reader = mod.PdfReader(str(path))
-        text = "\\n".join((page.extract_text() or "") for page in reader.pages)
-        print(text)
-        raise SystemExit(0)
-    except Exception as exc:
-        errors.append(f"{module_name}: {exc}")
-
-print("\\n".join(errors))
-raise SystemExit(2)
-  `.trim();
-
-  try {
-    const output = execFileSync('python3', ['-c', script, filePath], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'pipe']
-    });
-    return normalizeText(output);
-  } catch (error) {
-    throw new Error(`PDF konnte nicht gelesen werden: ${error.message}`);
-  }
-}
-
-function withTemporaryFile(buffer, extension, reader) {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wiss-style-'));
-  const tempFile = path.join(tempDir, `upload${extension}`);
-
-  try {
-    fs.writeFileSync(tempFile, buffer);
-    return reader(tempFile);
-  } finally {
-    try {
-      fs.unlinkSync(tempFile);
-    } catch {}
-    try {
-      fs.rmdirSync(tempDir);
-    } catch {}
-  }
-}
-
-function extractTextFromUpload({ filename, mimeType, contentBase64 }) {
-  const name = String(filename || 'upload').trim() || 'upload';
-  const extension = path.extname(name).toLowerCase();
-  const buffer = Buffer.from(String(contentBase64 || ''), 'base64');
-  const normalizedMimeType = String(mimeType || '').toLowerCase();
-
-  if (!buffer.length) {
-    throw new Error('Die hochgeladene Datei enthält keinen lesbaren Inhalt.');
-  }
-
-  if (['.txt', '.md', '.csv', '.rtf'].includes(extension) || normalizedMimeType.startsWith('text/')) {
-    return normalizeText(buffer.toString('utf8'));
-  }
-
-  if (['.html', '.htm'].includes(extension)) {
-    return stripHtml(buffer.toString('utf8'));
-  }
-
-  if (extension === '.docx') {
-    return withTemporaryFile(buffer, extension, extractDocxText);
-  }
-
-  if (extension === '.pdf') {
-    return withTemporaryFile(buffer, extension, extractPdfText);
-  }
-
-  throw new Error('Unterstützt werden aktuell TXT, MD, HTML, DOCX und PDF.');
 }
 
 function findSentenceWithPattern(sentences, regex) {
@@ -527,6 +426,7 @@ function cleanupRevisionText(text) {
     .replace(/\s+\)/g, ')')
     .replace(/\n{3,}/g, '\n\n')
     .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n[ \t]+/g, '\n')
     .trim();
 }
 
@@ -1485,89 +1385,6 @@ function analyzeScientificStyle(text, citationStyle = 'apa', metadata = {}) {
   };
 }
 
-async function createAiScientificReview({ text, heuristic, citationStyle, apiKey, model }) {
-  const excerpt = text.length > 12000 ? `${text.slice(0, 12000)}\n\n[Text gekürzt]` : text;
-  const prompt = `
-Du bist eine präzise, konstruktive Schreibberaterin für wissenschaftliche Texte in deutscher Schweizer Standardsprache.
-Analysiere den Text lernförderlich.
-Nutze die heuristische Voranalyse nur als Ausgangspunkt.
-Berücksichtige besonders:
-- Objektivität statt Ich-/Man-Formulierungen
-- Präzision, klare Argumentationsstruktur und Verständlichkeit
-- antidiskriminierende Sprache
-- Zitation im gewählten Stil (${citationStyle === 'apa' ? 'APA' : 'Fussnoten'})
 
-Antworte ausschliesslich als JSON.
-
-Schema:
-{
-  "summary": "2-3 Sätze",
-  "strengths": ["..."],
-  "improvements": ["..."],
-  "line_edits": [
-    {
-      "before": "kurzer problematischer Ausschnitt",
-      "after": "verbesserte Formulierung",
-      "why": "kurze Begründung"
-    }
-  ]
-}
-
-Heuristik:
-${JSON.stringify(heuristic, null, 2)}
-
-Text:
-${excerpt}
-  `.trim();
-
-  const response = await fetch('https://api.openai.com/v1/responses', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model,
-      input: [
-        {
-          role: 'user',
-          content: [{ type: 'input_text', text: prompt }]
-        }
-      ],
-      max_output_tokens: 1000
-    })
-  });
-
-  if (!response.ok) {
-    const details = (await response.text()).slice(0, 1200);
-    throw new Error(`KI-Analyse fehlgeschlagen: ${details}`);
-  }
-
-  const data = await response.json();
-  const outputText =
-    data.output_text ||
-    (Array.isArray(data.output) && data.output[0]?.content?.[0]?.text) ||
-    '';
-
-  let parsed;
-  try {
-    parsed = JSON.parse(outputText);
-  } catch {
-    throw new Error('Die KI-Antwort war kein gültiges JSON.');
-  }
-
-  return {
-    available: true,
-    used: true,
-    summary: String(parsed.summary || ''),
-    strengths: Array.isArray(parsed.strengths) ? parsed.strengths.slice(0, 5) : [],
-    improvements: Array.isArray(parsed.improvements) ? parsed.improvements.slice(0, 6) : [],
-    lineEdits: Array.isArray(parsed.line_edits) ? parsed.line_edits.slice(0, 6) : []
-  };
-}
-
-module.exports = {
-  analyzeScientificStyle,
-  createAiScientificReview,
-  extractTextFromUpload
-};
+globalThis.ScientificReview = { analyzeScientificStyle, stripHtml, extractDocxXmlText };
+})();

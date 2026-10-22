@@ -1,14 +1,7 @@
 {
   "name": "wissenschaftssprache",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Lern- und Ueberpruefungstool fuer wissenschaftlichen Stil mit de-CH LanguageTool und Zitiermodus",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.19.2",
-    "ws": "^8.18.0"
-  }
+  "description": "Kostenlose Browser-Werkstatt ohne API, Konto oder Serverdienst",
+  "scripts": { "start": "node server.js", "test": "node --test tests/browser-engine.test.cjs" }
 }

@@ -2,6 +2,7 @@
 <html lang="de-CH">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; worker-src 'self' blob:; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Werkstatt Wissenschaftssprache</title>
     <link rel="stylesheet" href="styles.css" />
@@ -10,7 +11,7 @@
     <div class="page-shell">
       <div class="masthead">
         <a class="brand" href="./">wissenschafts<span>sprache</span><i aria-hidden="true">W</i></a>
-        <span class="masthead-note">Werkstatt für deine Facharbeit</span>
+        <span class="masthead-note">Gratis · lokal im Browser · ohne Konto</span>
       </div>
       <header class="hero">
         <div class="hero-copy">
@@ -19,7 +20,7 @@
           <p class="lede">
             Lade einen Text hoch oder füge ihn direkt ein. Das Tool markiert sprachliche und
             stilistische Schwächen, prüft Quellenhinweise im gewählten Zitationsmodus und bietet
-            eine Verbesserungskopie für die Überarbeitung.
+            eine regelbasierte Verbesserungskopie für die Überarbeitung. Alles läuft auf deinem Gerät – ohne API-Key, Serverdienst oder kostenpflichtige Aufrufe.
           </p>
         </div>
 
@@ -44,7 +45,7 @@
 
           <div class="hero-meta">
             <span id="fileMeta">Noch keine Datei geladen.</span>
-            <span id="statusBadge" class="status-badge neutral">Bereit</span>
+            <span id="statusBadge" role="status" aria-live="polite" class="status-badge neutral">Bereit</span>
           </div>
         </div>
       </header>
@@ -167,7 +168,7 @@
             </div>
 
             <textarea
-              id="textInput" aria-label="Ausgangstext"
+              id="textInput" aria-label="Ausgangstext" spellcheck="true" lang="de-CH"
               placeholder="Füge hier deinen wissenschaftlichen Text ein oder lade eine Datei hoch."
             ></textarea>
 
@@ -208,7 +209,7 @@
             </div>
 
             <textarea
-              id="revisionOutput" aria-label="Verbesserungskopie"
+              id="revisionOutput" aria-label="Verbesserungskopie" spellcheck="true" lang="de-CH"
               placeholder="Nach der Analyse kann hier eine bearbeitbare Verbesserungskopie erzeugt werden."
             ></textarea>
             <p class="revision-note">
@@ -230,6 +231,7 @@
               </div>
             </div>
 
+            <p class="subtle-copy">Orientierung aus festen Sprachregeln, keine Note oder fachliche Begutachtung. Quelleninhalte und Belegstellen werden nicht verifiziert.</p>
             <p id="summaryText" class="summary-text">
               Nach der Prüfung erscheinen hier Gesamturteil, Prioritäten und Lernhinweise.
             </p>
@@ -295,7 +297,7 @@
             <div class="panel-head">
               <div>
                 <p class="panel-kicker">Rechtschreibung und Grammatik</p>
-                <h2>LanguageTool de-CH</h2>
+                <h2>Lokaler Sprach-Basischeck</h2>
               </div>
             </div>
             <p id="spellcheckStatus" class="subtle-copy">
@@ -304,17 +306,24 @@
             <div id="spellcheckBox" class="stack-list empty-state">
               Treffer und Korrekturvorschläge erscheinen hier.
             </div>
-            <p class="service-note">
-              Prüfung mit
-              <a href="https://languagetool.org/de" target="_blank" rel="noreferrer">LanguageTool</a>
-              in deutschschweizer Rechtschreibung.
-            </p>
+            <p class="service-note">Prüft ausgewählte Schreibfehler, Wortwiederholungen, Abstände und Schweizer ss-Schreibung. Die integrierte Rechtschreibprüfung deines Browsers kann weitere Hinweise geben; deren Umfang hängt von den Browsereinstellungen ab.</p>
           </article>
         </section>
       </main>
+      <section class="prompt-panel panel">
+        <p class="panel-kicker">Zum Selbstverwenden · optional</p>
+        <h2>Dein Überarbeitungs-Prompt</h2>
+        <p>Der Prompt übernimmt deinen Text und den gewählten Zitationsstil. Du kannst ihn kopieren und selbst in einem kostenlosen Chat-Angebot verwenden. Diese Werkstatt öffnet keinen KI-Dienst, übermittelt nichts und löst keine KI-Kosten aus. Die Nutzung eines anderen Angebots ist freiwillig und unterliegt dessen Bedingungen und Gratislimits.</p>
+        <label class="field" for="promptOutput">Vorbereiteter Prompt mit deinem Text</label>
+        <textarea id="promptOutput" readonly></textarea>
+        <button class="button primary" type="button" id="copyPromptButton">Prompt kopieren</button>
+        <p id="promptStatus" role="status" aria-live="polite"></p>
+      </section>
       <footer><span>Wissenschaftssprache · Schreibwerkstatt</span><span>Präzise. Eigenständig. Nachweisbar.</span></footer>
     </div>
 
+    <script src="vendor/fflate.js"></script>
+    <script src="review-engine.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

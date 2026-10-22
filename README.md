@@ -1,73 +1,38 @@
-# Wissenschaftssprache
+# Wissenschaftssprache – Gratisversion
 
-Ein webbasiertes Lern- und Überprüfungstool für wissenschaftlichen Stil. Die App verbindet lokale Heuristiken, optionale KI-Rückmeldungen, eine Rechtschreib- und Grammatikprüfung mit `LanguageTool` in `de-CH` sowie eine Korrekturfunktion für Zitation im Modus `APA` oder `Fussnoten`.
+Die gesamte Werkstatt läuft als statische Seite auf GitHub Pages. Keine API-Schlüssel,
+keine KI-Aufrufe, keine externen Prüfdienste, keine kostenpflichtigen Abhängigkeiten.
+Es wird kein Node-Hosting benötigt. Eingaben und Dateien werden von der Anwendung nicht versendet.
 
-## Hauptfunktion
+## Funktionen und Grenzen
 
-- Upload oder Einfügen von `txt`, `md`, `html`, `docx` und `pdf`
-- Analyse wissenschaftlicher Sprache mit Markierung typischer Schwächen
-- Verbesserungsvorschläge und bearbeitbare Verbesserungskopie
-- Zitationsprüfung mit Umschalter zwischen `APA` und `Fussnoten`
-- `LanguageTool`-Prüfung in deutschschweizer Rechtschreibung
-- optionale KI-Zusatzanalyse über OpenAI
+- Regelbasierte Stil-, Struktur-, Zitations- und Dossierhinweise im Browser.
+- Drei regelbasierte Überarbeitungsstufen mit nachvollziehbaren Eingriffen.
+- TXT, Markdown, HTML, DOCX und PDFs mit Textebene lokal lesen (bis 20 MB / 250 PDF-Seiten).
+  Keine OCR für Scans. PDF-Lesereihenfolge und Absätze können vom Original abweichen;
+  DOCX-Import liest den Haupttext, nicht Kopfzeilen, Kommentare oder Fussnoten.
+- Lokaler Sprach-Basischeck für ausgewählte Fehler, Wiederholungen und Schweizer ss-Schreibung.
+  Keine vollständige Grammatikprüfung. Browser-Rechtschreibprüfung ist zusätzlich aktiviert;
+  mögliche erweiterte Browser-Prüfdienste werden durch eigene Browsereinstellungen gesteuert.
+- Anpassbarer Prompt zum manuellen Kopieren in ein selbst gewähltes Gratisangebot.
+  Keine automatische Übermittlung oder Zusicherung fremder Gratislimits.
+- Bewertungen sind heuristische Orientierung, keine Benotung, Quellenprüfung oder Plagiatsprüfung.
 
-Die Hauptoberfläche liegt unter:
+## Veröffentlichung
 
-```text
-/wissenschaftssprache/
-```
+`.github/workflows/pages.yml` veröffentlicht die statischen Dateien auf GitHub Pages.
+Direkter Einstieg: `/wissenschaftssprache/public/wissenschaftssprache/`.
+Eine frühere Render-Konfiguration und die API-Implementierung wurden entfernt.
+Das beendet keine möglicherweise früher separat eingerichteten Hosting-Abonnements.
 
-## Lokal starten
+## Lokal (optional)
 
-```bash
-npm install
-npm start
-```
+`npm start` startet mit Node ohne Paketinstallation einen reinen statischen Vorschauserver.
+Dann `http://localhost:3000/wissenschaftssprache/` öffnen. `npm test` prüft die lokale Engine.
 
-Danach im Browser öffnen:
+## Quellen
 
-```text
-http://localhost:3000/wissenschaftssprache/
-```
-
-## Deployment auf Render
-
-Das Repository enthält bereits eine passende [render.yaml](./render.yaml).
-
-Auf Render:
-
-1. Neues Web Service aus dem GitHub-Repo erstellen.
-2. Render erkennt `render.yaml` automatisch.
-3. Falls gewünscht, `OPENAI_API_KEY` oder `OPENAI_API_KEY_DEFAULT` als Environment Variable setzen.
-4. Deploy starten.
-
-Wichtige Pfade:
-
-- Startseite: `/`
-- App: `/wissenschaftssprache/`
-- Healthcheck: `/api/health`
-
-## OpenAI Setup
-
-Die KI-Erweiterung ist optional. Ohne API-Key läuft die lokale Analyse weiterhin.
-
-Möglichkeit 1, lokal per `.env.local`:
-
-```bash
-OPENAI_API_KEY_DEFAULT="sk-..."
-OPENAI_MODEL="gpt-4o-mini"
-```
-
-Möglichkeit 2, auf macOS über den Schlüsselbund:
-
-```bash
-security add-generic-password -a "$USER" -s "reden-beurteilungsroboter-openai" -w "sk-..." -U
-```
-
-## Zentrale Dateien
-
-- [server.js](./server.js)
-- [wissenschaftssprache-review.js](./wissenschaftssprache-review.js)
-- [public/wissenschaftssprache/index.html](./public/wissenschaftssprache/index.html)
-- [public/wissenschaftssprache/app.js](./public/wissenschaftssprache/app.js)
-- [public/wissenschaftssprache/styles.css](./public/wissenschaftssprache/styles.css)
+`public/wissenschaftssprache/review-engine.js` enthält die Browseranalyse.
+`app.js` steuert Dateilesen, Darstellung, Basischeck und Prompt.
+PDF.js 4.10.38 (Apache-2.0) und fflate 0.8.2 (MIT) liegen mit Lizenzen unter `vendor/`.
+Bibliotheken werden lokal ausgeliefert, ohne CDN-Aufrufe.
